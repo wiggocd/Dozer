@@ -17,7 +17,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Initalize Dozer Icons
         _ = DozerIcons.shared
-        if DozerIcons.shared.hideStatusBarIconsAtLaunch {
+        if DozerIcons.shared.hideStatusBarIconsAtLaunch || DozerIcons.shared.hiddenLastSession {
             DozerIcons.shared.hide()
         }
 

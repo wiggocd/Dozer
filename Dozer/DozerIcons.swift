@@ -11,6 +11,7 @@ public final class DozerIcons {
     private var timerToCheckUserInteraction = Timer()
     private var timerToHideDozerIcons = Timer()
     private var previousApp = NSRunningApplication()
+    private var launch = true
 
     private init() {
         dozerIcons.append(NormalStatusIcon())
@@ -29,6 +30,7 @@ public final class DozerIcons {
 
         Defaults.observe(.isShortcutSet) { change in
             self.triggerHideBothDozerIcons()
+            self.launch = false
         }
         .tieToLifetime(of: self)
     }
@@ -53,6 +55,12 @@ public final class DozerIcons {
     public var hideStatusBarIconsAtLaunch: Bool = Defaults[.hideAtLaunchEnabled] {
         didSet {
             Defaults[.hideAtLaunchEnabled] = self.hideStatusBarIconsAtLaunch
+        }
+    }
+
+    public var hiddenLastSession: Bool = Defaults[.hiddenLastSession] {
+        didSet {
+            Defaults[.hiddenLastSession] = self.hiddenLastSession
         }
     }
 
@@ -139,6 +147,7 @@ public final class DozerIcons {
         }
         didHideStatusBarIcons()
         hideIconAndMenu()
+        if !launch { hiddenLastSession = true }
     }
 
     public func show() {
@@ -150,6 +159,7 @@ public final class DozerIcons {
         }
         didShowStatusBarIcons()
         showIconAndMenu()
+        if !launch { hiddenLastSession = false }
     }
 
     public func toggle() {
